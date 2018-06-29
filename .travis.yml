@@ -1,0 +1,14 @@
+language: php
+php:
+- 7.1.9
+before_install:
+  - travis_retry composer self-update
+  - composer install
+script: phpunit --exclude-group FITS --bootstrap vendor/autoload.php tests
+deploy:
+  provider: heroku
+  api_key:
+    secure: PxQlGDGiH+Y1t5npNgPERCtoJbBnVnKddbqhY8aGdy7ALNShYxRmYhf2UBlmW38eGzKfMQXX5lzy4JoH3ofTX0N69j30w8OFKOH99FdXCUOW0zYtOXbAftOhFnREtdOrqXtx5knwU06Qzt36OGonS6smoqRXvZQV/TXS2Ad413eCyAbi6CDqBP7oyhpZO/PEIrcqMqD7DRSnaHqKLgp1X4w5fBIkpD4qIMrhpQCBnO05ZJeFko8m/2QrrdKqxqzZ3snYTLSNIdXodZ9VSxwcgimFXMDAIiHOBR/Ky9I6d6bl84mVQAWivf6V60LpfijSM2HLDb0buqqeMNdj0nbl8gnHjMouGIHDZBjYRMjEI/QoRq2gG1VLzRDlhMdc5AAscJ1RFrt5Wy8qkX7GD48paMPJdxyvy40vooSx5VXbbhB/cdlIVQQdwbDL2jUOtAPOMjTys88m1Cb+rV3/TWdemK0o0j25I8vda8GHjMcuhphyV+yGMRzt+K0z5xBaHfTT9mfjwNs1VRY56XxvpBJ3NByefbvZ74wrK0gEC99cB4jeABYm+Rqu3ZfC++372fNXk11iL7RC/bZ2HQMnvsnSeRFuvqDrl/+VS+PxQgCmBHNocr3X2ccKTQIbJGpKoi0S83m1/ICf5iiisY167QtmuMfmjSNCa7zd4dUg7exYdQg=
+  app: School-Web-Project
+  on:
+    repo: EmmanuelMess/School-Web-Project

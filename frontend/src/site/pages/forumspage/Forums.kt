@@ -19,14 +19,14 @@ object Forums : MdlContent {
                 }
                 drawer("drawer") {
                     mainElement.header("drawer-header") {
-                        setAttribute("style", " background: url('assets/images/icon.jpg') center / cover; padding: 10px;")
+                        setAttribute("style", " background: url('frontend/assets/images/icon.jpg') center / cover; padding: 10px;")
                     }
 
                     nav("navigation") {
                         link {
                             text = "Pagina principal"
                             materialIcons = "forum"
-                            href = "index.html"
+                            href = "index.php"
                         }
                         link {
                             text = "Ingresar"

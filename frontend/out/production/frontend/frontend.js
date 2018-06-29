@@ -1,7 +1,7 @@
 if (typeof kotlin === 'undefined') {
-  throw new Error("Error loading module 'School-Web-Project'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'School-Web-Project'.");
+  throw new Error("Error loading module 'frontend'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'frontend'.");
 }
-this['School-Web-Project'] = function (_, Kotlin) {
+var frontend = function (_, Kotlin) {
   'use strict';
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
   var Kind_CLASS = Kotlin.Kind.CLASS;
@@ -19,6 +19,8 @@ this['School-Web-Project'] = function (_, Kotlin) {
   var IllegalStateException_init = Kotlin.kotlin.IllegalStateException_init_pdl1vj$;
   var ReadWriteProperty = Kotlin.kotlin.properties.ReadWriteProperty;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
+  var toShort = Kotlin.toShort;
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var IllegalArgumentException_init = Kotlin.kotlin.IllegalArgumentException_init_pdl1vj$;
   MdlColor$Background.prototype = Object.create(MdlColor.prototype);
   MdlColor$Background.prototype.constructor = MdlColor$Background;
@@ -2275,7 +2277,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
     simpleName: 'FloatingActionButton',
     interfaces: []
   };
-  var list = defineInlineFunction('School-Web-Project.components.list_tt4us9$', wrapFunction(function () {
+  var list = defineInlineFunction('frontend.components.list_tt4us9$', wrapFunction(function () {
     var List_init = _.components.List;
     var plus = _.plus_mh1xch$;
     return function ($receiver, cssClassId, init) {
@@ -2764,7 +2766,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
     $receiver.append(document.createTextNode(iconName));
     return $receiver;
   }
-  var header = defineInlineFunction('School-Web-Project.header_ldvnw0$', wrapFunction(function () {
+  var header = defineInlineFunction('frontend.header_ldvnw0$', wrapFunction(function () {
     var classType = _.classType_46n0ku$;
     return function ($receiver, classId, init) {
       if (classId === void 0)
@@ -2777,7 +2779,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return header;
     };
   }));
-  var img = defineInlineFunction('School-Web-Project.img_xxj20k$', wrapFunction(function () {
+  var img = defineInlineFunction('frontend.img_xxj20k$', wrapFunction(function () {
     var Img_init = _.Img;
     return function ($receiver, classId, init) {
       if (classId === void 0)
@@ -2788,7 +2790,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return img.mainElement;
     };
   }));
-  var img_0 = defineInlineFunction('School-Web-Project.img_emetj8$', wrapFunction(function () {
+  var img_0 = defineInlineFunction('frontend.img_emetj8$', wrapFunction(function () {
     var Img_init = _.Img;
     return function (classId, init) {
       if (classId === void 0)
@@ -2798,7 +2800,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return img.mainElement;
     };
   }));
-  var div = defineInlineFunction('School-Web-Project.div_ldvnw0$', wrapFunction(function () {
+  var div = defineInlineFunction('frontend.div_ldvnw0$', wrapFunction(function () {
     var classType = _.classType_46n0ku$;
     return function ($receiver, classId, init) {
       if (classId === void 0)
@@ -2811,13 +2813,13 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return div;
     };
   }));
-  var b = defineInlineFunction('School-Web-Project.b_w0hmpq$', function ($receiver, init) {
+  var b = defineInlineFunction('frontend.b_w0hmpq$', function ($receiver, init) {
     var b = document.createElement('b');
     init(b);
     $receiver.append(b);
     return b;
   });
-  var h2 = defineInlineFunction('School-Web-Project.h2_ldvnw0$', wrapFunction(function () {
+  var h2 = defineInlineFunction('frontend.h2_ldvnw0$', wrapFunction(function () {
     var classType = _.classType_46n0ku$;
     return function ($receiver, classId, init) {
       if (classId === void 0)
@@ -2830,7 +2832,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return h2;
     };
   }));
-  var span = defineInlineFunction('School-Web-Project.span_ldvnw0$', wrapFunction(function () {
+  var span = defineInlineFunction('frontend.span_ldvnw0$', wrapFunction(function () {
     var classType = _.classType_46n0ku$;
     return function ($receiver, classId, init) {
       if (classId === void 0)
@@ -2843,7 +2845,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return span;
     };
   }));
-  var span_0 = defineInlineFunction('School-Web-Project.span_rvhpk0$', wrapFunction(function () {
+  var span_0 = defineInlineFunction('frontend.span_rvhpk0$', wrapFunction(function () {
     var classType = _.classType_46n0ku$;
     return function (classId, init) {
       if (classId === void 0)
@@ -2924,6 +2926,46 @@ this['School-Web-Project'] = function (_, Kotlin) {
   function classType($receiver, className) {
     $receiver.setAttribute('class', className);
   }
+  function CommonDataRequest() {
+    CommonDataRequest_instance = this;
+  }
+  function CommonDataRequest$makeAsyncRequest$lambda() {
+    return Unit;
+  }
+  function CommonDataRequest$makeAsyncRequest$lambda_0(closure$request, closure$callback, closure$error) {
+    return function (it) {
+      if (closure$request.readyState === XMLHttpRequest.DONE) {
+        if (closure$request.status === toShort(200)) {
+          closure$callback(closure$request);
+        }
+         else {
+          closure$error();
+        }
+      }
+      return Unit;
+    };
+  }
+  CommonDataRequest.prototype.makeAsyncRequest_q0vpun$ = function (method, url, callback, error) {
+    if (error === void 0)
+      error = CommonDataRequest$makeAsyncRequest$lambda;
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = CommonDataRequest$makeAsyncRequest$lambda_0(request, callback, error);
+    request.open(method, url, true);
+    request.send();
+    println('aa');
+  };
+  CommonDataRequest.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'CommonDataRequest',
+    interfaces: []
+  };
+  var CommonDataRequest_instance = null;
+  function CommonDataRequest_getInstance() {
+    if (CommonDataRequest_instance === null) {
+      new CommonDataRequest();
+    }
+    return CommonDataRequest_instance;
+  }
   function Color() {
     Color_instance = this;
     this.primary = (new MdlColor$Background$pink(Shade$s800_getInstance())).toString();
@@ -2976,7 +3018,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
   function Forums$createPage$lambda$lambda$lambda$lambda$lambda($receiver) {
     $receiver.text = 'Pagina principal';
     $receiver.materialIcons = 'forum';
-    $receiver.href = 'index.html';
+    $receiver.href = 'index.php';
     return Unit;
   }
   function Forums$createPage$lambda$lambda$lambda$lambda$lambda$lambda$lambda($receiver) {
@@ -3022,7 +3064,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
     var $receiver_1 = document.createElement('header');
     classType($receiver_1, classId);
     var header = $receiver_1;
-    header.setAttribute('style', " background: url('assets/images/icon.jpg') center / cover; padding: 10px;");
+    header.setAttribute('style', " background: url('frontend/assets/images/icon.jpg') center / cover; padding: 10px;");
     $receiver_0.append(header);
     $receiver.nav_huf4ba$('navigation', Forums$createPage$lambda$lambda$lambda$lambda);
     return Unit;
@@ -3156,7 +3198,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
   function MainPage$createPage$lambda$lambda$lambda$lambda$lambda($receiver) {
     $receiver.text = 'Foros';
     $receiver.materialIcons = 'forum';
-    $receiver.href = 'forum.html';
+    $receiver.href = 'forum.php';
     return Unit;
   }
   function MainPage$createPage$lambda$lambda$lambda$lambda$lambda$lambda$lambda($receiver) {
@@ -3202,7 +3244,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
     var $receiver_1 = document.createElement('header');
     classType($receiver_1, classId);
     var header = $receiver_1;
-    header.setAttribute('style', " background: url('assets/images/icon.jpg') center / cover; padding: 10px;");
+    header.setAttribute('style', " background: url('frontend/assets/images/icon.jpg') center / cover; padding: 10px;");
     $receiver_0.append(header);
     $receiver.nav_huf4ba$('navigation', MainPage$createPage$lambda$lambda$lambda$lambda);
     return Unit;
@@ -3224,11 +3266,20 @@ this['School-Web-Project'] = function (_, Kotlin) {
       return this.content_mt7l9q$_0;
     }
   });
+  function MainPage$createX$lambda$lambda$lambda$lambda($receiver) {
+    println($receiver.responseText);
+    return Unit;
+  }
+  function MainPage$createX$lambda$lambda$lambda$lambda_0() {
+    println('Error');
+    return Unit;
+  }
   function MainPage$createX$lambda$lambda$lambda($receiver) {
+    CommonDataRequest_getInstance().makeAsyncRequest_q0vpun$('GET', 'backend/test.php', MainPage$createX$lambda$lambda$lambda$lambda, MainPage$createX$lambda$lambda$lambda$lambda_0);
     $receiver.title = 'Rithmio';
     $receiver.content = 'At Rithmio I Introduced new technologies like Kotlin and RxJava which have helped to make the team faster and more efficient.';
     $receiver.buttonSecondary = Dialog$Dialog$Button_init();
-    $receiver.buttonPrimary = new Dialog$Button('Ir a foros', false, 'forum.html', Color_getInstance().accent);
+    $receiver.buttonPrimary = new Dialog$Button('Ir a foros', false, 'forum.php', Color_getInstance().accent);
     return Unit;
   }
   function MainPage$createX$lambda$lambda($receiver) {
@@ -3294,7 +3345,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
       var tmp$_0;
       tmp$_0 = array.length - 1 | 0;
       for (var i = 0; i <= tmp$_0; i++) {
-        array[i] = new MainPage$MainPageCard('assets/images/weapons/' + i + '.jpg', 'Rithmio', '\n                        At Rithmio I Introduced new technologies like\n                        Kotlin and RxJava which have helped to make the\n                        team faster and more efficient.\n                        ');
+        array[i] = new MainPage$MainPageCard('frontend/assets/images/weapons/' + i + '.jpg', 'Rithmio', '\n                        At Rithmio I Introduced new technologies like\n                        Kotlin and RxJava which have helped to make the\n                        team faster and more efficient.\n                        ');
       }
       tmp$.createX_0($receiver, array);
       return Unit;
@@ -3481,7 +3532,7 @@ this['School-Web-Project'] = function (_, Kotlin) {
     get: Card$Shadow$DP16_getInstance
   });
   Card.Shadow = Card$Shadow;
-  $$importsForInline$$['School-Web-Project'] = _;
+  $$importsForInline$$.frontend = _;
   Card.Image = Card$Image;
   Card.Button = Card$Button;
   package$components.Card = Card;
@@ -3531,6 +3582,10 @@ this['School-Web-Project'] = function (_, Kotlin) {
   _.span_rvhpk0$ = span_0;
   _.style_46n0ku$ = style;
   _.Img = Img;
+  var package$requests = _.requests || (_.requests = {});
+  Object.defineProperty(package$requests, 'CommonDataRequest', {
+    get: CommonDataRequest_getInstance
+  });
   var package$site = _.site || (_.site = {});
   Object.defineProperty(package$site, 'Color', {
     get: Color_getInstance
@@ -3562,6 +3617,6 @@ this['School-Web-Project'] = function (_, Kotlin) {
   MAINPAGE_TITLE = 'Main';
   FORUM_TITLE = 'Forum';
   main([]);
-  Kotlin.defineModule('School-Web-Project', _);
+  Kotlin.defineModule('frontend', _);
   return _;
-}(typeof this['School-Web-Project'] === 'undefined' ? {} : this['School-Web-Project'], kotlin);
+}(typeof frontend === 'undefined' ? {} : frontend, kotlin);

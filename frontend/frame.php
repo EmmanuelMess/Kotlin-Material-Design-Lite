@@ -23,8 +23,8 @@ function createHtml(string $name) {
         <script type="text/javascript" src="frontend/assets/libs/polyfill/dialog-polyfill.js"></script>
         <script type="text/javascript" src="frontend/assets/libs/fontawsome.js"></script>
 
-        <script type="text/javascript" src="frontend/out/production/frontend/lib/kotlin.js"></script>
-        <script type="text/javascript" src="frontend/out/production/frontend/frontend.js"></script>
+        <script type="text/javascript" src="frontend/web/lib/kotlin.js"></script>
+        <script type="text/javascript" src="frontend/web/frontend.js"></script>
 
     </body>
     </html>

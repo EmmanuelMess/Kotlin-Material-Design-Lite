@@ -1,18 +1,20 @@
-group 'org.example'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 buildscript {
     ext.kotlin_version = '1.2.50'
     ext.web_dir = "${projectDir}/web/"
     repositories {
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.gradle:build-scan-plugin:1.14"
     }
 }
 
 apply plugin: 'kotlin2js'
+apply plugin: 'com.gradle.build-scan'
 
 sourceSets {
     main.kotlin.srcDirs += "src/"
@@ -52,4 +54,9 @@ build.doLast() {
             include "*.js"
         }
     }
+}
+
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
 }

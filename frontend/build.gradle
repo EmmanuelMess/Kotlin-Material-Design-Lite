@@ -25,7 +25,6 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    implementation 'com.beust:klaxon:3.0.1'
 }
 
 clean.doFirst() {

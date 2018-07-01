@@ -20,8 +20,9 @@ var frontend = function (_, Kotlin) {
   var ReadWriteProperty = Kotlin.kotlin.properties.ReadWriteProperty;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var toShort = Kotlin.toShort;
-  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var IllegalArgumentException_init = Kotlin.kotlin.IllegalArgumentException_init_pdl1vj$;
+  var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
   MdlColor$Background.prototype = Object.create(MdlColor.prototype);
   MdlColor$Background.prototype.constructor = MdlColor$Background;
   MdlColor$Background$blueGrey.prototype = Object.create(MdlColor$Background.prototype);
@@ -2926,10 +2927,104 @@ var frontend = function (_, Kotlin) {
   function classType($receiver, className) {
     $receiver.setAttribute('class', className);
   }
+  function Requestables() {
+    Requestables_instance = this;
+  }
+  Requestables.prototype.requestWeapons_vux9f0$ = function (id, amount) {
+    return 'backend/request_weapons.php?id=' + id + '&amount=' + amount;
+  };
+  Requestables.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Requestables',
+    interfaces: []
+  };
+  var Requestables_instance = null;
+  function Requestables_getInstance() {
+    if (Requestables_instance === null) {
+      new Requestables();
+    }
+    return Requestables_instance;
+  }
+  function RawRequestData() {
+    RawRequestData_instance = this;
+  }
+  function RawRequestData$getWeaponsRaw$lambda(it) {
+    return Unit;
+  }
+  function RawRequestData$getWeaponsRaw$lambda_0(closure$callback) {
+    return function ($receiver) {
+      closure$callback($receiver.responseText);
+      return Unit;
+    };
+  }
+  RawRequestData.prototype.getWeaponsRaw_u92s9h$ = function (id, amount, callback, error) {
+    if (error === void 0)
+      error = RawRequestData$getWeaponsRaw$lambda;
+    CommonDataRequest_getInstance().makeAsyncRequest_h38368$('GET', Requestables_getInstance().requestWeapons_vux9f0$(id, amount), RawRequestData$getWeaponsRaw$lambda_0(callback), error);
+  };
+  RawRequestData.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'RawRequestData',
+    interfaces: []
+  };
+  var RawRequestData_instance = null;
+  function RawRequestData_getInstance() {
+    if (RawRequestData_instance === null) {
+      new RawRequestData();
+    }
+    return RawRequestData_instance;
+  }
+  function WeaponRawProcessing() {
+    WeaponRawProcessing_instance = this;
+  }
+  WeaponRawProcessing.prototype.getWeaponDTOs_61zpoe$ = function (rawData) {
+    return JSON.parse(rawData);
+  };
+  WeaponRawProcessing.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'WeaponRawProcessing',
+    interfaces: []
+  };
+  var WeaponRawProcessing_instance = null;
+  function WeaponRawProcessing_getInstance() {
+    if (WeaponRawProcessing_instance === null) {
+      new WeaponRawProcessing();
+    }
+    return WeaponRawProcessing_instance;
+  }
+  function Requests() {
+    Requests_instance = this;
+  }
+  function Requests$getWeapons$lambda(it) {
+    return Unit;
+  }
+  function Requests$getWeapons$lambda_0(closure$callback) {
+    return function (it) {
+      closure$callback(WeaponRawProcessing_getInstance().getWeaponDTOs_61zpoe$(it));
+      return Unit;
+    };
+  }
+  Requests.prototype.getWeapons_2xk1s8$ = function (id, amount, callback, error) {
+    if (error === void 0)
+      error = Requests$getWeapons$lambda;
+    RawRequestData_getInstance().getWeaponsRaw_u92s9h$(id, amount, Requests$getWeapons$lambda_0(callback), error);
+  };
+  Requests.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Requests',
+    interfaces: []
+  };
+  var Requests_instance = null;
+  function Requests_getInstance() {
+    if (Requests_instance === null) {
+      new Requests();
+    }
+    return Requests_instance;
+  }
   function CommonDataRequest() {
     CommonDataRequest_instance = this;
   }
-  function CommonDataRequest$makeAsyncRequest$lambda() {
+  function CommonDataRequest$makeAsyncRequest$lambda($receiver) {
     return Unit;
   }
   function CommonDataRequest$makeAsyncRequest$lambda_0(closure$request, closure$callback, closure$error) {
@@ -2939,20 +3034,19 @@ var frontend = function (_, Kotlin) {
           closure$callback(closure$request);
         }
          else {
-          closure$error();
+          closure$error(closure$request);
         }
       }
       return Unit;
     };
   }
-  CommonDataRequest.prototype.makeAsyncRequest_q0vpun$ = function (method, url, callback, error) {
+  CommonDataRequest.prototype.makeAsyncRequest_h38368$ = function (method, requestFile, callback, error) {
     if (error === void 0)
       error = CommonDataRequest$makeAsyncRequest$lambda;
     var request = new XMLHttpRequest();
     request.onreadystatechange = CommonDataRequest$makeAsyncRequest$lambda_0(request, callback, error);
-    request.open(method, url, true);
+    request.open(method, requestFile, true);
     request.send();
-    println('aa');
   };
   CommonDataRequest.$metadata$ = {
     kind: Kind_OBJECT,
@@ -2966,6 +3060,61 @@ var frontend = function (_, Kotlin) {
     }
     return CommonDataRequest_instance;
   }
+  function WeaponRowDTO(weaponDTOs, id) {
+    this.weaponDTOs = weaponDTOs;
+    this.id = id;
+  }
+  WeaponRowDTO.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'WeaponRowDTO',
+    interfaces: []
+  };
+  WeaponRowDTO.prototype.component1 = function () {
+    return this.weaponDTOs;
+  };
+  WeaponRowDTO.prototype.component2 = function () {
+    return this.id;
+  };
+  WeaponRowDTO.prototype.copy_kc2bjb$ = function (weaponDTOs, id) {
+    return new WeaponRowDTO(weaponDTOs === void 0 ? this.weaponDTOs : weaponDTOs, id === void 0 ? this.id : id);
+  };
+  WeaponRowDTO.prototype.toString = function () {
+    return 'WeaponRowDTO(weaponDTOs=' + Kotlin.toString(this.weaponDTOs) + (', id=' + Kotlin.toString(this.id)) + ')';
+  };
+  WeaponRowDTO.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.weaponDTOs) | 0;
+    result = result * 31 + Kotlin.hashCode(this.id) | 0;
+    return result;
+  };
+  WeaponRowDTO.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.weaponDTOs, other.weaponDTOs) && Kotlin.equals(this.id, other.id)))));
+  };
+  function WeaponDTO(weaponRaw) {
+    this.weaponRaw = weaponRaw;
+  }
+  WeaponDTO.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'WeaponDTO',
+    interfaces: []
+  };
+  WeaponDTO.prototype.component1 = function () {
+    return this.weaponRaw;
+  };
+  WeaponDTO.prototype.copy_61zpoe$ = function (weaponRaw) {
+    return new WeaponDTO(weaponRaw === void 0 ? this.weaponRaw : weaponRaw);
+  };
+  WeaponDTO.prototype.toString = function () {
+    return 'WeaponDTO(weaponRaw=' + Kotlin.toString(this.weaponRaw) + ')';
+  };
+  WeaponDTO.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.weaponRaw) | 0;
+    return result;
+  };
+  WeaponDTO.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.weaponRaw, other.weaponRaw))));
+  };
   function Color() {
     Color_instance = this;
     this.primary = (new MdlColor$Background$pink(Shade$s800_getInstance())).toString();
@@ -3266,16 +3415,7 @@ var frontend = function (_, Kotlin) {
       return this.content_mt7l9q$_0;
     }
   });
-  function MainPage$createX$lambda$lambda$lambda$lambda($receiver) {
-    println($receiver.responseText);
-    return Unit;
-  }
-  function MainPage$createX$lambda$lambda$lambda$lambda_0() {
-    println('Error');
-    return Unit;
-  }
   function MainPage$createX$lambda$lambda$lambda($receiver) {
-    CommonDataRequest_getInstance().makeAsyncRequest_q0vpun$('GET', 'backend/test.php', MainPage$createX$lambda$lambda$lambda$lambda, MainPage$createX$lambda$lambda$lambda$lambda_0);
     $receiver.title = 'Rithmio';
     $receiver.content = 'At Rithmio I Introduced new technologies like Kotlin and RxJava which have helped to make the team faster and more efficient.';
     $receiver.buttonSecondary = Dialog$Dialog$Button_init();
@@ -3338,7 +3478,10 @@ var frontend = function (_, Kotlin) {
   MainPage$MainPageCard.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.image, other.image) && Kotlin.equals(this.title, other.title) && Kotlin.equals(this.supportingText, other.supportingText)))));
   };
-  function MainPage$content$lambda$lambda(this$MainPage) {
+  function MainPage$content$lambda$lambda$lambda(it) {
+    return it;
+  }
+  function MainPage$content$lambda$lambda$lambda_0(this$MainPage) {
     return function ($receiver) {
       var tmp$ = this$MainPage;
       var array = Array_0(50);
@@ -3351,9 +3494,24 @@ var frontend = function (_, Kotlin) {
       return Unit;
     };
   }
+  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
+  function MainPage$content$lambda$lambda(this$MainPage, this$) {
+    return function (it) {
+      var $receiver = it.weaponDTOs;
+      var destination = ArrayList_init($receiver.length);
+      var tmp$;
+      for (tmp$ = 0; tmp$ !== $receiver.length; ++tmp$) {
+        var item = $receiver[tmp$];
+        destination.add_11rb$(item.toString());
+      }
+      println(joinToString(destination, void 0, void 0, void 0, void 0, void 0, MainPage$content$lambda$lambda$lambda));
+      grid(this$, void 0, MainPage$content$lambda$lambda$lambda_0(this$MainPage));
+      return Unit;
+    };
+  }
   function MainPage$content$lambda(this$MainPage) {
     return function ($receiver) {
-      grid($receiver, void 0, MainPage$content$lambda$lambda(this$MainPage));
+      Requests_getInstance().getWeapons_2xk1s8$(0, 50, MainPage$content$lambda$lambda(this$MainPage, $receiver));
       return Unit;
     };
   }
@@ -3583,9 +3741,23 @@ var frontend = function (_, Kotlin) {
   _.style_46n0ku$ = style;
   _.Img = Img;
   var package$requests = _.requests || (_.requests = {});
+  Object.defineProperty(package$requests, 'Requestables', {
+    get: Requestables_getInstance
+  });
+  Object.defineProperty(package$requests, 'RawRequestData', {
+    get: RawRequestData_getInstance
+  });
+  Object.defineProperty(package$requests, 'WeaponRawProcessing', {
+    get: WeaponRawProcessing_getInstance
+  });
+  Object.defineProperty(package$requests, 'Requests', {
+    get: Requests_getInstance
+  });
   Object.defineProperty(package$requests, 'CommonDataRequest', {
     get: CommonDataRequest_getInstance
   });
+  package$requests.WeaponRowDTO = WeaponRowDTO;
+  package$requests.WeaponDTO = WeaponDTO;
   var package$site = _.site || (_.site = {});
   Object.defineProperty(package$site, 'Color', {
     get: Color_getInstance

@@ -1,11 +1,11 @@
-version '1.0'
+group 'org.example'
+version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.2.41'
-    ext.web_dir = 'web'
+    ext.kotlin_version = '1.2.50'
+    ext.web_dir = "${projectDir}/web/"
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -20,12 +20,10 @@ sourceSets {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    implementation 'com.beust:klaxon:3.0.1'
 }
 
 clean.doFirst() {
@@ -39,7 +37,7 @@ build.doLast() {
             includeEmptyDirs = false
 
             from zipTree(file.absolutePath)
-            into "${projectDir}/${web_dir}/lib"
+            into "${web_dir}/lib"
             include { fileTreeElement ->
                 def path = fileTreeElement.path
                 path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
@@ -47,24 +45,11 @@ build.doLast() {
         }
     }
 
-    // Unpack build contents
-    // TODO Remove this step when a CDN link is available.
+    // Copy scripts to web directory
     copy {
-        File artifact = new File("build/libs/${project.name}-${project.version}.jar")
-        includeEmptyDirs = false
-
-        from zipTree(artifact)
         into "${web_dir}"
-        include { fileTreeElement ->
-            def path = fileTreeElement.path
-            !(path.startsWith("META-INF/") || path.startsWith("${project.name}"))
+        from ("build/classes/kotlin/main") {
+            include "*.js"
         }
-    }
-
-    // Copy code to web directory
-    copy {
-        include '*.js'
-        from new File("build/classes/kotlin/main")
-        into "${web_dir}/"
     }
 }

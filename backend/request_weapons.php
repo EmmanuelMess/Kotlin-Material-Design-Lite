@@ -2,6 +2,9 @@
 
 include "utils/http_status_codes.php";
 include "requestable_weapons.php";
+include "database_handler.php";
+
+DatabaseHandler::createConnection();
 
 $uOldId = isset($_GET["id"])? $_GET["id"]:"";
 $uAmount = isset($_GET["amount"])? $_GET["amount"]:"";

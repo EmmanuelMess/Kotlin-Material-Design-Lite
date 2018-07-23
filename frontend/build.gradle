@@ -1,19 +1,25 @@
 version '1.0'
 
 buildscript {
-    ext.kotlin_version = '1.2.50'
+    ext.kotlin_version = '1.2.51'
+    ext.serialization_version = '0.6.0'
     ext.web_dir = "${projectDir}/web/"
     repositories {
+        jcenter()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.gradle:build-scan-plugin:1.14"
+        classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
     }
 }
 
+apply plugin: 'java'
 apply plugin: 'kotlin2js'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.gradle.build-scan'
 
 sourceSets {
@@ -22,10 +28,14 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version"
 }
 
 clean.doFirst() {
@@ -49,7 +59,7 @@ build.doLast() {
 
     // Copy scripts to web directory
     copy {
-        into "${web_dir}"
+        into web_dir
         from ("build/classes/kotlin/main") {
             include "*.js"
         }

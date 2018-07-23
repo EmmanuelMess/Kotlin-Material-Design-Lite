@@ -1,7 +1,10 @@
 if (typeof kotlin === 'undefined') {
   throw new Error("Error loading module 'frontend'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'frontend'.");
 }
-var frontend = function (_, Kotlin) {
+if (typeof this['kotlinx-serialization-runtime-js'] === 'undefined') {
+  throw new Error("Error loading module 'frontend'. Its dependency 'kotlinx-serialization-runtime-js' was not found. Please, check whether 'kotlinx-serialization-runtime-js' is loaded prior to 'frontend'.");
+}
+var frontend = function (_, Kotlin, $module$kotlinx_serialization_runtime_js) {
   'use strict';
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
   var Kind_CLASS = Kotlin.Kind.CLASS;
@@ -20,7 +23,12 @@ var frontend = function (_, Kotlin) {
   var ReadWriteProperty = Kotlin.kotlin.properties.ReadWriteProperty;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var toShort = Kotlin.toShort;
-  var println = Kotlin.kotlin.io.println_s8jyv4$;
+  var ReferenceArraySerializer = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.internal.ReferenceArraySerializer;
+  var UnknownFieldException = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.UnknownFieldException;
+  var SerialClassDescImpl = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.internal.SerialClassDescImpl;
+  var KSerializer = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.KSerializer;
+  var MissingFieldException = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.MissingFieldException;
+  var JSON_0 = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.json.JSON;
   var IllegalArgumentException_init = Kotlin.kotlin.IllegalArgumentException_init_pdl1vj$;
   MdlColor$Background.prototype = Object.create(MdlColor.prototype);
   MdlColor$Background.prototype.constructor = MdlColor$Background;
@@ -2926,10 +2934,86 @@ var frontend = function (_, Kotlin) {
   function classType($receiver, className) {
     $receiver.setAttribute('class', className);
   }
+  function Requestables() {
+    Requestables_instance = this;
+  }
+  Requestables.prototype.requestWeapons_vux9f0$ = function (id, amount) {
+    return 'backend/request_weapons.php?id=' + id + '&amount=' + amount;
+  };
+  Requestables.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Requestables',
+    interfaces: []
+  };
+  var Requestables_instance = null;
+  function Requestables_getInstance() {
+    if (Requestables_instance === null) {
+      new Requestables();
+    }
+    return Requestables_instance;
+  }
+  function RawRequestData() {
+    RawRequestData_instance = this;
+  }
+  function RawRequestData$getWeaponsRaw$lambda(it) {
+    return Unit;
+  }
+  function RawRequestData$getWeaponsRaw$lambda_0(closure$callback) {
+    return function ($receiver) {
+      closure$callback($receiver.responseText);
+      return Unit;
+    };
+  }
+  RawRequestData.prototype.getWeaponsRaw_u92s9h$ = function (id, amount, callback, error) {
+    if (error === void 0)
+      error = RawRequestData$getWeaponsRaw$lambda;
+    CommonDataRequest_getInstance().makeAsyncRequest_h38368$('GET', Requestables_getInstance().requestWeapons_vux9f0$(id, amount), RawRequestData$getWeaponsRaw$lambda_0(callback), error);
+  };
+  RawRequestData.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'RawRequestData',
+    interfaces: []
+  };
+  var RawRequestData_instance = null;
+  function RawRequestData_getInstance() {
+    if (RawRequestData_instance === null) {
+      new RawRequestData();
+    }
+    return RawRequestData_instance;
+  }
+  function Requests() {
+    Requests_instance = this;
+  }
+  function Requests$getWeapons$lambda(it) {
+    return Unit;
+  }
+  function Requests$getWeapons$lambda_0(closure$callback) {
+    return function (it) {
+      closure$callback(WeaponRawProcessing_getInstance().getWeaponDTOs_61zpoe$(it));
+      return Unit;
+    };
+  }
+  Requests.prototype.getWeapons_2xk1s8$ = function (id, amount, callback, error) {
+    if (error === void 0)
+      error = Requests$getWeapons$lambda;
+    RawRequestData_getInstance().getWeaponsRaw_u92s9h$(id, amount, Requests$getWeapons$lambda_0(callback), error);
+  };
+  Requests.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Requests',
+    interfaces: []
+  };
+  var Requests_instance = null;
+  function Requests_getInstance() {
+    if (Requests_instance === null) {
+      new Requests();
+    }
+    return Requests_instance;
+  }
   function CommonDataRequest() {
     CommonDataRequest_instance = this;
   }
-  function CommonDataRequest$makeAsyncRequest$lambda() {
+  function CommonDataRequest$makeAsyncRequest$lambda($receiver) {
     return Unit;
   }
   function CommonDataRequest$makeAsyncRequest$lambda_0(closure$request, closure$callback, closure$error) {
@@ -2939,20 +3023,19 @@ var frontend = function (_, Kotlin) {
           closure$callback(closure$request);
         }
          else {
-          closure$error();
+          closure$error(closure$request);
         }
       }
       return Unit;
     };
   }
-  CommonDataRequest.prototype.makeAsyncRequest_q0vpun$ = function (method, url, callback, error) {
+  CommonDataRequest.prototype.makeAsyncRequest_h38368$ = function (method, requestFile, callback, error) {
     if (error === void 0)
       error = CommonDataRequest$makeAsyncRequest$lambda;
     var request = new XMLHttpRequest();
     request.onreadystatechange = CommonDataRequest$makeAsyncRequest$lambda_0(request, callback, error);
-    request.open(method, url, true);
+    request.open(method, requestFile, true);
     request.send();
-    println('aa');
   };
   CommonDataRequest.$metadata$ = {
     kind: Kind_OBJECT,
@@ -2965,6 +3048,281 @@ var frontend = function (_, Kotlin) {
       new CommonDataRequest();
     }
     return CommonDataRequest_instance;
+  }
+  function WeaponRowDTO(rows, id) {
+    WeaponRowDTO$Companion_getInstance();
+    this.rows = rows;
+    this.id = id;
+  }
+  function WeaponRowDTO$Companion() {
+    WeaponRowDTO$Companion_instance = this;
+  }
+  WeaponRowDTO$Companion.prototype.serializer = function () {
+    return WeaponRowDTO$$serializer_getInstance();
+  };
+  WeaponRowDTO$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var WeaponRowDTO$Companion_instance = null;
+  function WeaponRowDTO$Companion_getInstance() {
+    if (WeaponRowDTO$Companion_instance === null) {
+      new WeaponRowDTO$Companion();
+    }
+    return WeaponRowDTO$Companion_instance;
+  }
+  function WeaponRowDTO$$serializer() {
+    this.serialClassDesc_pjqc2o$_0 = new SerialClassDescImpl('requests.WeaponRowDTO');
+    this.serialClassDesc.addElement_61zpoe$('rows');
+    this.serialClassDesc.addElement_61zpoe$('id');
+    WeaponRowDTO$$serializer_instance = this;
+  }
+  Object.defineProperty(WeaponRowDTO$$serializer.prototype, 'serialClassDesc', {
+    get: function () {
+      return this.serialClassDesc_pjqc2o$_0;
+    }
+  });
+  WeaponRowDTO$$serializer.prototype.save_ejfkry$ = function (output_0, obj) {
+    var output = output_0.writeBegin_276rha$(this.serialClassDesc, []);
+    output.writeSerializableElementValue_k4al2t$(this.serialClassDesc, 0, new ReferenceArraySerializer(Kotlin.getKClass(WeaponDTO), WeaponDTO$$serializer_getInstance()), obj.rows);
+    output.writeIntElementValue_j8ubi9$(this.serialClassDesc, 1, obj.id);
+    output.writeEnd_f6e2p$(this.serialClassDesc);
+  };
+  WeaponRowDTO$$serializer.prototype.load_ljkqvg$ = function (input_0) {
+    var index, readAll = false;
+    var bitMask0 = 0;
+    var local0
+    , local1;
+    var input = input_0.readBegin_276rha$(this.serialClassDesc, []);
+    loopLabel: while (true) {
+      index = input.readElement_f6e2p$(this.serialClassDesc);
+      switch (index) {
+        case -2:
+          readAll = true;
+        case 0:
+          local0 = (bitMask0 & 1) === 0 ? input.readSerializableElementValue_nqb5fm$(this.serialClassDesc, 0, new ReferenceArraySerializer(Kotlin.getKClass(WeaponDTO), WeaponDTO$$serializer_getInstance())) : input.updateSerializableElementValue_2bgl1k$(this.serialClassDesc, 0, new ReferenceArraySerializer(Kotlin.getKClass(WeaponDTO), WeaponDTO$$serializer_getInstance()), local0);
+          bitMask0 |= 1;
+          if (!readAll)
+            break;
+        case 1:
+          local1 = input.readIntElementValue_xvmgof$(this.serialClassDesc, 1);
+          bitMask0 |= 2;
+          if (!readAll)
+            break;
+        case -1:
+          break loopLabel;
+        default:throw new UnknownFieldException(index);
+      }
+    }
+    input.readEnd_f6e2p$(this.serialClassDesc);
+    return WeaponRowDTO_init(bitMask0, local0, local1, null);
+  };
+  WeaponRowDTO$$serializer.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: '$serializer',
+    interfaces: [KSerializer]
+  };
+  var WeaponRowDTO$$serializer_instance = null;
+  function WeaponRowDTO$$serializer_getInstance() {
+    if (WeaponRowDTO$$serializer_instance === null) {
+      new WeaponRowDTO$$serializer();
+    }
+    return WeaponRowDTO$$serializer_instance;
+  }
+  function WeaponRowDTO_init(seen, rows, id, serializationConstructorMarker) {
+    var $this = Object.create(WeaponRowDTO.prototype);
+    if ((seen & 1) === 0)
+      throw new MissingFieldException('rows');
+    else
+      $this.rows = rows;
+    if ((seen & 2) === 0)
+      throw new MissingFieldException('id');
+    else
+      $this.id = id;
+    return $this;
+  }
+  WeaponRowDTO.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'WeaponRowDTO',
+    interfaces: []
+  };
+  WeaponRowDTO.prototype.component1 = function () {
+    return this.rows;
+  };
+  WeaponRowDTO.prototype.component2 = function () {
+    return this.id;
+  };
+  WeaponRowDTO.prototype.copy_kc2bjb$ = function (rows, id) {
+    return new WeaponRowDTO(rows === void 0 ? this.rows : rows, id === void 0 ? this.id : id);
+  };
+  WeaponRowDTO.prototype.toString = function () {
+    return 'WeaponRowDTO(rows=' + Kotlin.toString(this.rows) + (', id=' + Kotlin.toString(this.id)) + ')';
+  };
+  WeaponRowDTO.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.rows) | 0;
+    result = result * 31 + Kotlin.hashCode(this.id) | 0;
+    return result;
+  };
+  WeaponRowDTO.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.rows, other.rows) && Kotlin.equals(this.id, other.id)))));
+  };
+  function WeaponDTO(imageUrl, title, description) {
+    WeaponDTO$Companion_getInstance();
+    this.imageUrl = imageUrl;
+    this.title = title;
+    this.description = description;
+  }
+  function WeaponDTO$Companion() {
+    WeaponDTO$Companion_instance = this;
+  }
+  WeaponDTO$Companion.prototype.serializer = function () {
+    return WeaponDTO$$serializer_getInstance();
+  };
+  WeaponDTO$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var WeaponDTO$Companion_instance = null;
+  function WeaponDTO$Companion_getInstance() {
+    if (WeaponDTO$Companion_instance === null) {
+      new WeaponDTO$Companion();
+    }
+    return WeaponDTO$Companion_instance;
+  }
+  function WeaponDTO$$serializer() {
+    this.serialClassDesc_awmdiq$_0 = new SerialClassDescImpl('requests.WeaponDTO');
+    this.serialClassDesc.addElement_61zpoe$('imageUrl');
+    this.serialClassDesc.addElement_61zpoe$('title');
+    this.serialClassDesc.addElement_61zpoe$('description');
+    WeaponDTO$$serializer_instance = this;
+  }
+  Object.defineProperty(WeaponDTO$$serializer.prototype, 'serialClassDesc', {
+    get: function () {
+      return this.serialClassDesc_awmdiq$_0;
+    }
+  });
+  WeaponDTO$$serializer.prototype.save_ejfkry$ = function (output_0, obj) {
+    var output = output_0.writeBegin_276rha$(this.serialClassDesc, []);
+    output.writeStringElementValue_k4mjep$(this.serialClassDesc, 0, obj.imageUrl);
+    output.writeStringElementValue_k4mjep$(this.serialClassDesc, 1, obj.title);
+    output.writeStringElementValue_k4mjep$(this.serialClassDesc, 2, obj.description);
+    output.writeEnd_f6e2p$(this.serialClassDesc);
+  };
+  WeaponDTO$$serializer.prototype.load_ljkqvg$ = function (input_0) {
+    var index, readAll = false;
+    var bitMask0 = 0;
+    var local0
+    , local1
+    , local2;
+    var input = input_0.readBegin_276rha$(this.serialClassDesc, []);
+    loopLabel: while (true) {
+      index = input.readElement_f6e2p$(this.serialClassDesc);
+      switch (index) {
+        case -2:
+          readAll = true;
+        case 0:
+          local0 = input.readStringElementValue_xvmgof$(this.serialClassDesc, 0);
+          bitMask0 |= 1;
+          if (!readAll)
+            break;
+        case 1:
+          local1 = input.readStringElementValue_xvmgof$(this.serialClassDesc, 1);
+          bitMask0 |= 2;
+          if (!readAll)
+            break;
+        case 2:
+          local2 = input.readStringElementValue_xvmgof$(this.serialClassDesc, 2);
+          bitMask0 |= 4;
+          if (!readAll)
+            break;
+        case -1:
+          break loopLabel;
+        default:throw new UnknownFieldException(index);
+      }
+    }
+    input.readEnd_f6e2p$(this.serialClassDesc);
+    return WeaponDTO_init(bitMask0, local0, local1, local2, null);
+  };
+  WeaponDTO$$serializer.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: '$serializer',
+    interfaces: [KSerializer]
+  };
+  var WeaponDTO$$serializer_instance = null;
+  function WeaponDTO$$serializer_getInstance() {
+    if (WeaponDTO$$serializer_instance === null) {
+      new WeaponDTO$$serializer();
+    }
+    return WeaponDTO$$serializer_instance;
+  }
+  function WeaponDTO_init(seen, imageUrl, title, description, serializationConstructorMarker) {
+    var $this = Object.create(WeaponDTO.prototype);
+    if ((seen & 1) === 0)
+      throw new MissingFieldException('imageUrl');
+    else
+      $this.imageUrl = imageUrl;
+    if ((seen & 2) === 0)
+      throw new MissingFieldException('title');
+    else
+      $this.title = title;
+    if ((seen & 4) === 0)
+      throw new MissingFieldException('description');
+    else
+      $this.description = description;
+    return $this;
+  }
+  WeaponDTO.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'WeaponDTO',
+    interfaces: []
+  };
+  WeaponDTO.prototype.component1 = function () {
+    return this.imageUrl;
+  };
+  WeaponDTO.prototype.component2 = function () {
+    return this.title;
+  };
+  WeaponDTO.prototype.component3 = function () {
+    return this.description;
+  };
+  WeaponDTO.prototype.copy_6hosri$ = function (imageUrl, title, description) {
+    return new WeaponDTO(imageUrl === void 0 ? this.imageUrl : imageUrl, title === void 0 ? this.title : title, description === void 0 ? this.description : description);
+  };
+  WeaponDTO.prototype.toString = function () {
+    return 'WeaponDTO(imageUrl=' + Kotlin.toString(this.imageUrl) + (', title=' + Kotlin.toString(this.title)) + (', description=' + Kotlin.toString(this.description)) + ')';
+  };
+  WeaponDTO.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.imageUrl) | 0;
+    result = result * 31 + Kotlin.hashCode(this.title) | 0;
+    result = result * 31 + Kotlin.hashCode(this.description) | 0;
+    return result;
+  };
+  WeaponDTO.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.imageUrl, other.imageUrl) && Kotlin.equals(this.title, other.title) && Kotlin.equals(this.description, other.description)))));
+  };
+  function WeaponRawProcessing() {
+    WeaponRawProcessing_instance = this;
+  }
+  var getKClass = Kotlin.getKClass;
+  var serializer = $module$kotlinx_serialization_runtime_js.kotlinx.serialization.serializer_1yb8b7$;
+  WeaponRawProcessing.prototype.getWeaponDTOs_61zpoe$ = function (rawData) {
+    return JSON_0.Companion.parse_67noqb$(serializer(getKClass(WeaponRowDTO)), rawData);
+  };
+  WeaponRawProcessing.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'WeaponRawProcessing',
+    interfaces: []
+  };
+  var WeaponRawProcessing_instance = null;
+  function WeaponRawProcessing_getInstance() {
+    if (WeaponRawProcessing_instance === null) {
+      new WeaponRawProcessing();
+    }
+    return WeaponRawProcessing_instance;
   }
   function Color() {
     Color_instance = this;
@@ -3266,16 +3624,7 @@ var frontend = function (_, Kotlin) {
       return this.content_mt7l9q$_0;
     }
   });
-  function MainPage$createX$lambda$lambda$lambda$lambda($receiver) {
-    println($receiver.responseText);
-    return Unit;
-  }
-  function MainPage$createX$lambda$lambda$lambda$lambda_0() {
-    println('Error');
-    return Unit;
-  }
   function MainPage$createX$lambda$lambda$lambda($receiver) {
-    CommonDataRequest_getInstance().makeAsyncRequest_q0vpun$('GET', 'backend/test.php', MainPage$createX$lambda$lambda$lambda$lambda, MainPage$createX$lambda$lambda$lambda$lambda_0);
     $receiver.title = 'Rithmio';
     $receiver.content = 'At Rithmio I Introduced new technologies like Kotlin and RxJava which have helped to make the team faster and more efficient.';
     $receiver.buttonSecondary = Dialog$Dialog$Button_init();
@@ -3298,8 +3647,9 @@ var frontend = function (_, Kotlin) {
   }
   MainPage.prototype.createX_0 = function ($receiver, mainPageCards) {
     var tmp$;
-    for (tmp$ = 0; tmp$ !== mainPageCards.length; ++tmp$) {
-      var mainPageCard = mainPageCards[tmp$];
+    tmp$ = mainPageCards.iterator();
+    while (tmp$.hasNext()) {
+      var mainPageCard = tmp$.next();
       $receiver.cellCard_oteltj$(2, void 0, void 0, MainPage$createX$lambda(mainPageCard));
     }
   };
@@ -3338,22 +3688,33 @@ var frontend = function (_, Kotlin) {
   MainPage$MainPageCard.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.image, other.image) && Kotlin.equals(this.title, other.title) && Kotlin.equals(this.supportingText, other.supportingText)))));
   };
-  function MainPage$content$lambda$lambda(this$MainPage) {
+  function MainPage$content$lambda$lambda$lambda(closure$cards, this$MainPage) {
     return function ($receiver) {
-      var tmp$ = this$MainPage;
-      var array = Array_0(50);
-      var tmp$_0;
-      tmp$_0 = array.length - 1 | 0;
-      for (var i = 0; i <= tmp$_0; i++) {
-        array[i] = new MainPage$MainPageCard('frontend/assets/images/weapons/' + i + '.jpg', 'Rithmio', '\n                        At Rithmio I Introduced new technologies like\n                        Kotlin and RxJava which have helped to make the\n                        team faster and more efficient.\n                        ');
-      }
-      tmp$.createX_0($receiver, array);
+      this$MainPage.createX_0($receiver, closure$cards);
       return Unit;
     };
   }
+  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
+  function MainPage$content$lambda$lambda(this$MainPage, this$) {
+    return function (it) {
+      var $receiver = it.rows;
+      var destination = ArrayList_init($receiver.length);
+      var tmp$;
+      for (tmp$ = 0; tmp$ !== $receiver.length; ++tmp$) {
+        var item = $receiver[tmp$];
+        destination.add_11rb$(new MainPage$MainPageCard(item.imageUrl, item.title, item.description));
+      }
+      var cards = destination;
+      grid(this$, void 0, MainPage$content$lambda$lambda$lambda(cards, this$MainPage));
+      return Unit;
+    };
+  }
+  function MainPage$content$lambda$lambda_0(it) {
+    return Unit;
+  }
   function MainPage$content$lambda(this$MainPage) {
     return function ($receiver) {
-      grid($receiver, void 0, MainPage$content$lambda$lambda(this$MainPage));
+      Requests_getInstance().getWeapons_2xk1s8$(0, 50, MainPage$content$lambda$lambda(this$MainPage, $receiver), MainPage$content$lambda$lambda_0);
       return Unit;
     };
   }
@@ -3583,8 +3944,35 @@ var frontend = function (_, Kotlin) {
   _.style_46n0ku$ = style;
   _.Img = Img;
   var package$requests = _.requests || (_.requests = {});
+  Object.defineProperty(package$requests, 'Requestables', {
+    get: Requestables_getInstance
+  });
+  Object.defineProperty(package$requests, 'RawRequestData', {
+    get: RawRequestData_getInstance
+  });
+  Object.defineProperty(package$requests, 'Requests', {
+    get: Requests_getInstance
+  });
   Object.defineProperty(package$requests, 'CommonDataRequest', {
     get: CommonDataRequest_getInstance
+  });
+  Object.defineProperty(WeaponRowDTO, 'Companion', {
+    get: WeaponRowDTO$Companion_getInstance
+  });
+  Object.defineProperty(WeaponRowDTO, '$serializer', {
+    get: WeaponRowDTO$$serializer_getInstance
+  });
+  package$requests.WeaponRowDTO = WeaponRowDTO;
+  Object.defineProperty(WeaponDTO, 'Companion', {
+    get: WeaponDTO$Companion_getInstance
+  });
+  Object.defineProperty(WeaponDTO, '$serializer', {
+    get: WeaponDTO$$serializer_getInstance
+  });
+  package$requests.WeaponDTO = WeaponDTO;
+  $$importsForInline$$['kotlinx-serialization-runtime-js'] = $module$kotlinx_serialization_runtime_js;
+  Object.defineProperty(package$requests, 'WeaponRawProcessing', {
+    get: WeaponRawProcessing_getInstance
   });
   var package$site = _.site || (_.site = {});
   Object.defineProperty(package$site, 'Color', {
@@ -3614,9 +4002,11 @@ var frontend = function (_, Kotlin) {
   Drawer.prototype.layoutTile_t2t2ot$$default = LayoutTile.prototype.layoutTile_t2t2ot$$default;
   Drawer.prototype.nav_huf4ba$ = LayoutNav.prototype.nav_huf4ba$;
   Drawer.prototype.layoutTile_t2t2ot$ = LayoutTile.prototype.layoutTile_t2t2ot$;
+  WeaponRowDTO$$serializer.prototype.update_qkk2oh$ = KSerializer.prototype.update_qkk2oh$;
+  WeaponDTO$$serializer.prototype.update_qkk2oh$ = KSerializer.prototype.update_qkk2oh$;
   MAINPAGE_TITLE = 'Main';
   FORUM_TITLE = 'Forum';
   main([]);
   Kotlin.defineModule('frontend', _);
   return _;
-}(typeof frontend === 'undefined' ? {} : frontend, kotlin);
+}(typeof frontend === 'undefined' ? {} : frontend, kotlin, this['kotlinx-serialization-runtime-js']);

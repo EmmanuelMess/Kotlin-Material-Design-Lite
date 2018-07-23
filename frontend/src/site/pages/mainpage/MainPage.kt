@@ -7,10 +7,9 @@ import components.layout.navigationlayout.content
 import components.layout.grid
 import header
 import mdlApp
-import requests.CommonDataRequest
+import requests.Requests
 import site.Color
-import kotlin.js.Math
-import kotlin.math.ceil
+import kotlin.collections.List
 
 object MainPage : MdlContent {
 
@@ -58,21 +57,16 @@ object MainPage : MdlContent {
     }
 
     override val content = content("Pagina Principal") {
-        grid {
-            createX(Array(50) {
-                MainPageCard("frontend/assets/images/weapons/$it.jpg", "Rithmio",
-                        """
-                        At Rithmio I Introduced new technologies like
-                        Kotlin and RxJava which have helped to make the
-                        team faster and more efficient.
-                        """)
+        Requests.getWeapons(0, 50, {
+            val cards = it.rows.map { MainPageCard(it.imageUrl, it.title, it.description) }
 
-
-            })
-        }
+            grid {
+                createX(cards)
+            }
+        }) { }
     }
 
-    private fun Grid.createX(mainPageCards: Array<MainPageCard>) {
+    private fun Grid.createX(mainPageCards: List<MainPageCard>) {
         for (mainPageCard in mainPageCards) {
             cellCard(2) {
                 size()
@@ -81,12 +75,6 @@ object MainPage : MdlContent {
                 supportingText = mainPageCard.supportingText
                 button = Card.Button("VER", Color.accent) {
                     dialog {
-                        CommonDataRequest.makeAsyncRequest("GET", "backend/test.php", {
-                            println(responseText)
-                        }) {
-                            println("Error")
-                        }
-
                         title = "Rithmio"
                         content = "At Rithmio I Introduced new technologies like Kotlin and RxJava which have helped to make the team faster and more efficient."
                         buttonSecondary = Dialog.Button()

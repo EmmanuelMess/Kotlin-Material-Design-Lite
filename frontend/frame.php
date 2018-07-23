@@ -24,6 +24,7 @@ function createHtml(string $name) {
         <script type="text/javascript" src="frontend/assets/libs/fontawsome.js"></script>
 
         <script type="text/javascript" src="frontend/web/lib/kotlin.js"></script>
+        <script type="text/javascript" src="frontend/web/lib/kotlinx-serialization-runtime-js.js"></script>
         <script type="text/javascript" src="frontend/web/frontend.js"></script>
 
     </body>
